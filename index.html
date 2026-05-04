@@ -3,717 +3,568 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Exercice – Les Propositions</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Politiques de quotas — ZEP</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #1a1208;
-    --cream: #f7f2e8;
-    --amber: #c8841a;
-    --red: #b83232;
-    --green: #2e7d5e;
-    --muted: #7a6e5a;
-    --line: #d4c9b0;
-    --paper: #fdf8ef;
+    --bg: #1a2535;
+    --bg2: #212f42;
+    --accent: #4e8fbd;
+    --accent2: #f0a500;
+    --white: #f0f4f8;
+    --muted: #8aa3ba;
+    --danger: #c0392b;
+    --success: #27ae60;
+    --card: #243347;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: var(--cream);
-    color: var(--ink);
-    font-family: 'DM Mono', monospace;
-    min-height: 100vh;
-    padding: 2rem 1rem;
-    background-image: 
-      repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 31px,
-        var(--line) 31px,
-        var(--line) 32px
-      );
-    background-size: 100% 32px;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
   }
 
-  .container {
-    max-width: 760px;
-    margin: 0 auto;
-    background: var(--paper);
-    border: 1px solid var(--line);
-    padding: 3rem 3.5rem;
-    box-shadow: 4px 4px 0 #c8b89040, 8px 8px 0 #c8b89020;
-    position: relative;
-  }
+  /* ── SLIDES ── */
+  .deck { width: 100%; height: 100vh; position: relative; }
 
-  .container::before {
-    content: '';
+  .slide {
     position: absolute;
-    top: 0; left: 4rem;
-    width: 2px;
-    height: 100%;
-    background: #e8a0a020;
+    inset: 0;
+    padding: 3.5rem 4rem;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--bg);
+    animation: fadeIn .45s ease;
+  }
+  .slide.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
-  header {
-    border-bottom: 2px solid var(--ink);
-    padding-bottom: 1.2rem;
-    margin-bottom: 2.5rem;
-  }
-
-  .subject-tag {
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
+  /* ── TAG ── */
+  .tag {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: .7rem;
+    font-weight: 600;
+    letter-spacing: .12em;
     text-transform: uppercase;
-    color: var(--amber);
-    font-weight: 500;
-    margin-bottom: 0.5rem;
+    padding: .28rem .75rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
   }
 
+  /* ── DIVIDER ── */
+  .divider {
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    margin: 1rem 0 1.8rem;
+  }
+
+  /* ── TYPOGRAPHY ── */
   h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    line-height: 1.2;
-    color: var(--ink);
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: .5rem;
   }
-
-  h1 em {
-    color: var(--amber);
-    font-style: italic;
-  }
-
-  .meta {
-    margin-top: 0.7rem;
-    font-size: 0.7rem;
-    color: var(--muted);
-    display: flex;
-    gap: 2rem;
-  }
-
-  /* LECON RAPIDE */
-  .lesson {
-    background: #fef9f0;
-    border-left: 3px solid var(--amber);
-    padding: 1.2rem 1.5rem;
-    margin-bottom: 2.5rem;
-    font-size: 0.75rem;
-    line-height: 1.8;
-  }
-
-  .lesson h2 {
+  h2 {
     font-family: 'Playfair Display', serif;
-    font-size: 0.85rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--amber);
-    margin-bottom: 0.8rem;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: .3rem;
   }
-
-  .lesson-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem 2rem;
-  }
-
-  .lesson-item {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .lesson-item .label {
-    color: var(--amber);
-    font-weight: 500;
-    white-space: nowrap;
-  }
-
-  /* EXERCICES */
-  .exercise-section {
-    margin-bottom: 2.5rem;
-  }
-
-  .exercise-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    margin-bottom: 0.3rem;
-    display: flex;
-    align-items: baseline;
-    gap: 0.8rem;
-  }
-
-  .exercise-title .num {
-    color: var(--amber);
-    font-size: 1.4rem;
-  }
-
-  .consigne {
-    font-size: 0.7rem;
+  .subtitle {
+    font-size: 1.05rem;
     color: var(--muted);
-    margin-bottom: 1.2rem;
-    font-style: italic;
+    margin-top: .6rem;
   }
 
-  /* Question MCQ */
-  .question {
+  /* ── SECTION HEADER ── */
+  .slide-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     margin-bottom: 1.5rem;
-    padding: 1rem 1.2rem;
-    background: white;
-    border: 1px solid var(--line);
-    transition: border-color 0.2s;
   }
-
-  .question.correct { border-color: var(--green); background: #f0faf5; }
-  .question.wrong   { border-color: var(--red);   background: #fdf0f0; }
-
-  .question-text {
-    font-size: 0.8rem;
-    margin-bottom: 0.8rem;
-    line-height: 1.6;
-  }
-
-  .question-text .phrase {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    color: var(--ink);
-  }
-
-  .phrase-part {
-    background: #f0e8d8;
-    padding: 0 4px;
-    border-bottom: 2px solid var(--amber);
-    cursor: default;
-  }
-
-  .choices {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-  }
-
-  .choice-btn {
-    padding: 0.35rem 0.8rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    border: 1px solid var(--line);
-    background: var(--cream);
-    color: var(--ink);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .choice-btn:hover:not(:disabled) {
-    border-color: var(--amber);
-    background: #fff8ee;
-  }
-
-  .choice-btn.selected-correct {
-    background: var(--green);
-    color: white;
-    border-color: var(--green);
-  }
-
-  .choice-btn.selected-wrong {
-    background: var(--red);
-    color: white;
-    border-color: var(--red);
-  }
-
-  .choice-btn.reveal-correct {
-    background: var(--green);
-    color: white;
-    border-color: var(--green);
-    opacity: 0.7;
-  }
-
-  .feedback {
-    font-size: 0.68rem;
-    margin-top: 0.7rem;
-    padding: 0.5rem 0.7rem;
-    display: none;
-    line-height: 1.5;
-  }
-
-  .feedback.show { display: block; }
-  .feedback.ok { background: #e8f5ee; color: var(--green); border-left: 2px solid var(--green); }
-  .feedback.ko { background: #fce8e8; color: var(--red); border-left: 2px solid var(--red); }
-
-  /* Exercice de repérage (souligner) */
-  .reperage-block {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 0.9rem;
-    line-height: 2.2;
-    margin-bottom: 1rem;
-    padding: 1rem 1.2rem;
-    background: white;
-    border: 1px solid var(--line);
-  }
-
-  .clickable-prop {
-    cursor: pointer;
-    padding: 2px 0;
-    border-bottom: 2px dashed #c8b89080;
-    transition: all 0.15s;
-  }
-
-  .clickable-prop:hover { border-bottom-color: var(--amber); background: #fff8ee; }
-  .clickable-prop.tagged-PP { border-bottom: 2.5px solid var(--green); background: #e8f5ee80; }
-  .clickable-prop.tagged-PS { border-bottom: 2.5px solid #5a72b8; background: #eeeeff80; }
-  .clickable-prop.tagged-PI { border-bottom: 2.5px solid var(--amber); background: #fff3e080; }
-
-  .legend-row {
-    display: flex;
-    gap: 1.2rem;
-    flex-wrap: wrap;
-    font-size: 0.68rem;
-    margin-bottom: 1rem;
-  }
-
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    cursor: pointer;
-    padding: 0.3rem 0.6rem;
-    border: 1px solid var(--line);
-    background: white;
-    transition: all 0.15s;
-  }
-
-  .legend-item:hover { border-color: var(--amber); }
-  .legend-item.active-tag { border-color: var(--ink); font-weight: 500; }
-
-  .dot {
-    width: 10px; height: 10px;
+  .num {
+    width: 2.4rem; height: 2.4rem;
+    background: var(--accent);
     border-radius: 50%;
-    display: inline-block;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1.1rem;
+    flex-shrink: 0;
   }
 
-  .dot-PP { background: var(--green); }
-  .dot-PS { background: #5a72b8; }
-  .dot-PI { background: var(--amber); }
-
-  /* Exercice de transformation */
-  .transform-item {
-    margin-bottom: 1.2rem;
-    padding: 0.9rem 1.1rem;
-    background: white;
-    border: 1px solid var(--line);
+  /* ── BULLETS ── */
+  .bullets { list-style: none; display: flex; flex-direction: column; gap: .85rem; margin-top: .5rem; }
+  .bullets li {
+    display: flex; align-items: flex-start; gap: .8rem;
+    font-size: 1.05rem; line-height: 1.5; color: var(--white);
   }
+  .bullets li::before {
+    content: '';
+    width: 8px; height: 8px;
+    min-width: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-top: .45rem;
+  }
+  .bullets li span { color: var(--muted); }
 
-  .transform-phrase {
+  /* ── CARDS GRID ── */
+  .cards { display: grid; gap: 1rem; margin-top: .5rem; }
+  .cards.cols2 { grid-template-columns: 1fr 1fr; }
+  .cards.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    border-left: 3px solid var(--accent);
+  }
+  .card.danger { border-left-color: var(--danger); }
+  .card.success { border-left-color: var(--success); }
+  .card-title { font-weight: 700; font-size: 1rem; margin-bottom: .35rem; color: var(--accent); }
+  .card.danger .card-title { color: #e74c3c; }
+  .card.success .card-title { color: var(--success); }
+  .card p { font-size: .9rem; color: var(--muted); line-height: 1.5; }
+
+  /* ── EXPERT CARDS ── */
+  .expert {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 1.1rem 1.4rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .6rem 1rem;
+    align-items: start;
+  }
+  .expert-badge {
+    width: 2.8rem; height: 2.8rem;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 1rem;
+    grid-row: span 2;
+  }
+  .expert-name { font-weight: 700; font-size: 1rem; color: var(--white); }
+  .expert-role { font-size: .78rem; color: var(--accent); font-weight: 500; }
+  .expert-quote { grid-column: 2; font-size: .88rem; color: var(--muted); line-height: 1.5; }
+
+  /* ── TIMELINE ── */
+  .timeline { display: flex; flex-direction: column; gap: 1.1rem; margin-top: .5rem; }
+  .tl-item { display: flex; gap: 1.2rem; align-items: flex-start; }
+  .tl-year {
+    background: var(--accent);
+    border-radius: 6px;
+    padding: .3rem .6rem;
+    font-weight: 700; font-size: .95rem;
+    min-width: 3.8rem; text-align: center;
+    flex-shrink: 0;
+  }
+  .tl-content h4 { font-weight: 700; font-size: 1rem; margin-bottom: .2rem; }
+  .tl-content p  { font-size: .88rem; color: var(--muted); line-height: 1.5; }
+
+  /* ── STAT BOXES ── */
+  .stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.2rem; margin: 1.2rem 0; }
+  .stat-box {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 1.4rem 1rem;
+    text-align: center;
+  }
+  .stat-val {
     font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 0.85rem;
-    margin-bottom: 0.6rem;
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: .5rem;
   }
+  .stat-label { font-size: .85rem; color: var(--muted); line-height: 1.4; }
 
-  .transform-row {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-  }
-
-  .arrow-label {
-    font-size: 0.65rem;
-    color: var(--amber);
-    white-space: nowrap;
-  }
-
-  .transform-input {
-    flex: 1;
-    min-width: 200px;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    padding: 0.4rem 0.7rem;
-    border: 1px solid var(--line);
-    background: var(--cream);
-    color: var(--ink);
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .transform-input:focus { border-color: var(--amber); }
-  .transform-input.correct-input { border-color: var(--green); background: #f0faf5; }
-  .transform-input.wrong-input  { border-color: var(--red);   background: #fdf0f0; }
-
-  .check-btn {
-    padding: 0.4rem 0.9rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    border: 1px solid var(--ink);
-    background: var(--ink);
-    color: var(--cream);
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-  }
-
-  .check-btn:hover { background: var(--amber); border-color: var(--amber); }
-
-  /* Score */
-  .score-bar {
-    margin-top: 2.5rem;
+  /* ── CASE STUDY ── */
+  .case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: .5rem; }
+  .case-card {
+    background: var(--card);
+    border-radius: 12px;
     padding: 1.5rem;
-    border: 1px solid var(--line);
-    background: white;
+  }
+  .case-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--accent);
+    opacity: .3;
+    line-height: 1;
+    margin-bottom: .4rem;
+  }
+  .case-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: .8rem; }
+  .case-card ul { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+  .case-card ul li { font-size: .9rem; color: var(--muted); padding-left: 1rem; position: relative; }
+  .case-card ul li::before { content: '→'; position: absolute; left: 0; color: var(--accent); }
+
+  /* ── CONCLUSION ── */
+  .conclusion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; margin-top: 1rem; }
+  .concl-item {
+    display: flex; gap: .7rem; align-items: flex-start;
+    background: var(--card);
+    border-radius: 8px;
+    padding: .9rem 1rem;
+  }
+  .concl-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: .05rem; }
+  .concl-text { font-size: .9rem; color: var(--muted); line-height: 1.5; }
+  .concl-text strong { color: var(--white); display: block; margin-bottom: .15rem; }
+
+  /* ── BOTTOM INFO ── */
+  .bottom-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 3.2rem;
+    background: var(--bg2);
+    border-top: 1px solid rgba(255,255,255,.06);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
+    padding: 0 2rem;
+    z-index: 100;
   }
-
-  .score-label {
-    font-size: 0.7rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  .score-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    color: var(--amber);
-  }
-
-  .score-msg {
-    font-size: 0.75rem;
-    color: var(--ink);
-    max-width: 300px;
-  }
-
-  .global-check-btn {
-    padding: 0.6rem 1.5rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    border: 2px solid var(--ink);
-    background: transparent;
-    color: var(--ink);
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  .global-check-btn:hover {
-    background: var(--ink);
-    color: var(--cream);
-  }
-
-  hr.divider {
+  .bottom-bar .authors { font-size: .8rem; color: var(--muted); }
+  .nav { display: flex; align-items: center; gap: .5rem; }
+  .nav button {
+    background: var(--card);
     border: none;
-    border-top: 1px solid var(--line);
-    margin: 2rem 0;
+    color: var(--white);
+    cursor: pointer;
+    width: 2rem; height: 2rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .2s;
+  }
+  .nav button:hover { background: var(--accent); }
+  .nav button:disabled { opacity: .3; cursor: not-allowed; }
+  .nav button:disabled:hover { background: var(--card); }
+  .counter { font-size: .82rem; color: var(--muted); min-width: 3.5rem; text-align: center; }
+
+  /* progress dots */
+  .dots { display: flex; gap: .35rem; align-items: center; }
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.2);
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .dot.active { background: var(--accent); width: 18px; border-radius: 3px; }
+
+  /* ── SLIDE 1 SPECIAL ── */
+  #slide-1 {
+    background: linear-gradient(135deg, #1a2535 0%, #1e3050 60%, #1a2535 100%);
+  }
+  #slide-1::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(78,143,189,.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .title-meta {
+    display: flex; align-items: center; gap: .8rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,.1);
+  }
+  .avatar {
+    width: 2rem; height: 2rem;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: .75rem;
   }
 
-  @media (max-width: 600px) {
-    .container { padding: 2rem 1.5rem; }
-    .lesson-grid { grid-template-columns: 1fr; }
-    h1 { font-size: 1.5rem; }
-  }
+  /* keyboard hint */
+  .hint { font-size: .7rem; color: rgba(255,255,255,.2); }
 </style>
 </head>
 <body>
-<div class="container">
 
-  <header>
-    <div class="subject-tag">Grammaire · Préparation Bac</div>
-    <h1>Les <em>Propositions</em><br>dans la phrase complexe</h1>
-    <div class="meta">
-      <span>📚 Seconde &amp; Première</span>
-      <span>⏱ ~20 minutes</span>
-      <span>🎯 Oral / Écrit</span>
-    </div>
-  </header>
+<div class="deck">
 
-  <!-- LECON -->
-  <div class="lesson">
-    <h2>📖 Mémo rapide</h2>
-    <div class="lesson-grid">
-      <div class="lesson-item"><span class="label">PP :</span> Proposition Principale – elle peut exister seule.</div>
-      <div class="lesson-item"><span class="label">PS :</span> Proposition Subordonnée – dépend de la PP (relative, complétive, circonstancielle…)</div>
-      <div class="lesson-item"><span class="label">PI :</span> Proposition Indépendante – ni PP ni PS ; phrase simple ou juxtaposée.</div>
-      <div class="lesson-item"><span class="label">Astuce :</span> Repère d'abord les verbes conjugués → chaque verbe = une proposition.</div>
+  <!-- SLIDE 1 : TITRE -->
+  <div class="slide active" id="slide-1">
+    <div class="tag">Discrimination positive</div>
+    <h1>Politiques de quotas<br>fondés sur le lieu<br>de scolarisation</h1>
+    <p class="subtitle">ZEP / REP — Accès à l'enseignement supérieur en France</p>
+    <div class="title-meta">
+      <div class="avatar">T</div>
+      <div class="avatar" style="background:#f0a500">E</div>
+      <div class="avatar" style="background:#27ae60">R</div>
+      <span style="color:var(--muted); font-size:.95rem; margin-left:.3rem">Titouan, Ewen & Raphaël</span>
     </div>
   </div>
 
-  <!-- EXERCICE 1 : QCM -->
-  <div class="exercise-section" id="ex1">
-    <div class="exercise-title"><span class="num">01</span> Nature des propositions soulignées</div>
-    <div class="consigne">Pour chaque phrase, identifie la nature de la proposition en gras.</div>
-
-    <div class="question" id="q1" data-answer="PS-relative">
-      <div class="question-text">
-        « Le roman <span class="phrase-part">que tu m'as prêté</span> était passionnant. »
-      </div>
-      <div class="choices">
-        <button class="choice-btn" onclick="answer(this,'q1','PP')">Proposition Principale</button>
-        <button class="choice-btn" onclick="answer(this,'q1','PS-relative')">Sub. relative</button>
-        <button class="choice-btn" onclick="answer(this,'q1','PS-completive')">Sub. complétive</button>
-        <button class="choice-btn" onclick="answer(this,'q1','PS-circ')">Sub. circonstancielle</button>
-      </div>
-      <div class="feedback" id="fb-q1"></div>
+  <!-- SLIDE 2 : QU'EST-CE ? -->
+  <div class="slide" id="slide-2">
+    <div class="slide-header">
+      <div class="num">1</div>
+      <h2>Qu'est-ce que c'est ?</h2>
     </div>
-
-    <div class="question" id="q2" data-answer="PS-completive">
-      <div class="question-text">
-        « Je savais <span class="phrase-part">qu'il reviendrait un jour</span>. »
+    <div class="divider"></div>
+    <ul class="bullets">
+      <li>Voies d'admission spécifiques pour les élèves de ZEP/REP dans les grandes écoles</li>
+      <li>Critère : lieu de scolarisation, pas seulement les notes</li>
+      <li>Objectif : corriger une inégalité structurelle par une mesure ciblée</li>
+      <li>Les élèves de ZEP = ~20 % des lycéens, mais moins de 5 % dans les grandes écoles</li>
+    </ul>
+    <div class="cards cols1" style="margin-top:1.5rem">
+      <div class="card" style="background:#1e3050; border-left-color:var(--accent2)">
+        <div class="card-title" style="color:var(--accent2)">💡 Problème central</div>
+        <p>Le lieu de naissance ne devrait pas déterminer l'avenir scolaire. La méritocratie formelle crée des inégalités réelles quand les conditions de départ sont inégales.</p>
       </div>
-      <div class="choices">
-        <button class="choice-btn" onclick="answer(this,'q2','PS-relative')">Sub. relative</button>
-        <button class="choice-btn" onclick="answer(this,'q2','PP')">Proposition Principale</button>
-        <button class="choice-btn" onclick="answer(this,'q2','PS-completive')">Sub. complétive</button>
-        <button class="choice-btn" onclick="answer(this,'q2','PI')">Prop. Indépendante</button>
-      </div>
-      <div class="feedback" id="fb-q2"></div>
-    </div>
-
-    <div class="question" id="q3" data-answer="PS-circ">
-      <div class="question-text">
-        « <span class="phrase-part">Bien qu'il fasse froid</span>, nous sommes sortis nous promener. »
-      </div>
-      <div class="choices">
-        <button class="choice-btn" onclick="answer(this,'q3','PP')">Proposition Principale</button>
-        <button class="choice-btn" onclick="answer(this,'q3','PS-relative')">Sub. relative</button>
-        <button class="choice-btn" onclick="answer(this,'q3','PS-completive')">Sub. complétive</button>
-        <button class="choice-btn" onclick="answer(this,'q3','PS-circ')">Sub. circonstancielle</button>
-      </div>
-      <div class="feedback" id="fb-q3"></div>
-    </div>
-
-    <div class="question" id="q4" data-answer="PP">
-      <div class="question-text">
-        « Lorsque la nuit tomba, <span class="phrase-part">les lumières de la ville s'allumèrent</span>. »
-      </div>
-      <div class="choices">
-        <button class="choice-btn" onclick="answer(this,'q4','PS-circ')">Sub. circonstancielle</button>
-        <button class="choice-btn" onclick="answer(this,'q4','PP')">Proposition Principale</button>
-        <button class="choice-btn" onclick="answer(this,'q4','PS-relative')">Sub. relative</button>
-        <button class="choice-btn" onclick="answer(this,'q4','PI')">Prop. Indépendante</button>
-      </div>
-      <div class="feedback" id="fb-q4"></div>
-    </div>
-
-    <div class="question" id="q5" data-answer="PI">
-      <div class="question-text">
-        « <span class="phrase-part">La pluie tombe</span> ; les rues se vident. »
-      </div>
-      <div class="choices">
-        <button class="choice-btn" onclick="answer(this,'q5','PP')">Proposition Principale</button>
-        <button class="choice-btn" onclick="answer(this,'q5','PS-circ')">Sub. circonstancielle</button>
-        <button class="choice-btn" onclick="answer(this,'q5','PI')">Prop. Indépendante</button>
-        <button class="choice-btn" onclick="answer(this,'q5','PS-completive')">Sub. complétive</button>
-      </div>
-      <div class="feedback" id="fb-q5"></div>
     </div>
   </div>
 
-  <hr class="divider">
-
-  <!-- EXERCICE 2 : Repérage interactif -->
-  <div class="exercise-section" id="ex2">
-    <div class="exercise-title"><span class="num">02</span> Repérage dans le texte</div>
-    <div class="consigne">
-      Choisis un type de proposition à étiqueter, puis clique sur les segments colorés dans le texte.
-      Clique à nouveau pour désélectionner.
+  <!-- SLIDE 3 : POURQUOI BONS -->
+  <div class="slide" id="slide-3">
+    <div class="slide-header">
+      <div class="num">2</div>
+      <h2>Pourquoi ces quotas peuvent-ils etre utiles ?</h2>
     </div>
-
-    <div class="legend-row">
-      <div class="legend-item active-tag" id="tag-PP" onclick="setTag('PP')"><span class="dot dot-PP"></span> Principale (PP)</div>
-      <div class="legend-item" id="tag-PS" onclick="setTag('PS')"><span class="dot dot-PS"></span> Subordonnée (PS)</div>
-      <div class="legend-item" id="tag-PI" onclick="setTag('PI')"><span class="dot dot-PI"></span> Indépendante (PI)</div>
-    </div>
-
-    <div class="reperage-block">
-      <span class="clickable-prop" id="seg1" onclick="tagProp('seg1')">La vieille femme s'assit</span>
-      <span> / </span>
-      <span class="clickable-prop" id="seg2" onclick="tagProp('seg2')">et elle prit une longue inspiration</span>.
-      <br>
-      <span class="clickable-prop" id="seg3" onclick="tagProp('seg3')">Bien que la soirée fût douce</span>,
-      <span class="clickable-prop" id="seg4" onclick="tagProp('seg4')">elle frissonnait légèrement</span>.
-      <br>
-      <span class="clickable-prop" id="seg5" onclick="tagProp('seg5')">Elle songeait</span>
-      <span class="clickable-prop" id="seg6" onclick="tagProp('seg6')">que les années passent trop vite</span>.
-      <br>
-      <span class="clickable-prop" id="seg7" onclick="tagProp('seg7')">Le jardin qu'elle aimait tant</span>
-      <span> était plongé dans la pénombre</span>.
-    </div>
-
-    <div style="font-size:0.68rem; color:var(--muted); margin-top:0.5rem;">
-      ✦ Correction attendue : seg1 = PI, seg2 = PI, seg3 = PS (circ.), seg4 = PP, seg5 = PP, seg6 = PS (complétive), seg7 = PS (relative)
+    <div class="divider"></div>
+    <div class="cards cols2">
+      <div class="card">
+        <div class="card-title">Manque de mixité sociale</div>
+        <p>Les grandes écoles recrutent quasi-exclusivement dans les lycées favorisés. Les élèves de REP+ sont quasiment absents des concours.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Inégalités cumulées</div>
+        <p>Moins d'enseignants expérimentés, moins d'accès aux prépas, moins de réseaux pour les élèves de ZEP.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Autocensure</div>
+        <p>Les élèves de ZEP s'excluent eux-mêmes par manque de modèles et d'information sur les filières d'excellence.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Discrimination indirecte</div>
+        <p>Les critères de sélection sont formellement neutres, mais leurs effets sont systématiquement inégaux.</p>
+      </div>
     </div>
   </div>
 
-  <hr class="divider">
-
-  <!-- EXERCICE 3 : Transformation -->
-  <div class="exercise-section" id="ex3">
-    <div class="exercise-title"><span class="num">03</span> Transformation de propositions</div>
-    <div class="consigne">
-      Réécris chaque proposition selon la consigne entre parenthèses. Tape ta réponse et vérifie.
+  <!-- SLIDE 4 : ARGUMENTS CONTRE -->
+  <div class="slide" id="slide-4">
+    <div class="slide-header">
+      <div class="num">3</div>
+      <h2>Arguments contre la discrimination positive</h2>
     </div>
-
-    <div class="transform-item">
-      <div class="transform-phrase">
-        « Il pleut. Nous restons chez nous. »
+    <div class="divider"></div>
+    <div class="cards cols2">
+      <div class="card danger">
+        <div class="card-title">« Baisse du niveau » ?</div>
+        <p>Argument le plus courant, peu étayé par les données.</p>
       </div>
-      <div style="font-size:0.68rem;color:var(--muted);margin-bottom:0.5rem;">→ Relie les deux propositions avec une subordonnée circonstancielle de cause.</div>
-      <div class="transform-row">
-        <input class="transform-input" id="t1" placeholder="Comme il pleut, nous…" />
-        <button class="check-btn" onclick="checkTransform('t1', ['comme il pleut, nous restons chez nous','puisqu il pleut, nous restons chez nous','étant donné qu il pleut, nous restons chez nous'])">Vérifier</button>
+      <div class="card danger">
+        <div class="card-title">Risque de stigmatisation</div>
+        <p>Les bénéficiaires peuvent être perçus comme moins légitimes.</p>
       </div>
-      <div class="feedback" id="fb-t1"></div>
-    </div>
-
-    <div class="transform-item">
-      <div class="transform-phrase">
-        « Je pense que tu as raison. »
+      <div class="card">
+        <div class="card-title">Inégalité de traitement</div>
+        <p>Certains y voient une injustice envers les candidats hors ZEP.</p>
       </div>
-      <div style="font-size:0.68rem;color:var(--muted);margin-bottom:0.5rem;">→ Identifie la subordonnée complétive et transforme-la en groupe nominal (nominalisation).</div>
-      <div class="transform-row">
-        <input class="transform-input" id="t2" placeholder="Je pense à…" />
-        <button class="check-btn" onclick="checkTransform('t2', ['je pense à ta raison','je crois en ta raison','je pense à ton bien-fondé','je suis convaincu de ta raison'])">Vérifier</button>
+      <div class="card">
+        <div class="card-title">Effet « sparadrap »</div>
+        <p>Ces dispositifs ne s'attaquent pas aux causes profondes des inégalités.</p>
       </div>
-      <div class="feedback" id="fb-t2"></div>
-    </div>
-
-    <div class="transform-item">
-      <div class="transform-phrase">
-        « Elle travaille dur. Elle réussira. »
-      </div>
-      <div style="font-size:0.68rem;color:var(--muted);margin-bottom:0.5rem;">→ Relie avec une subordonnée circonstancielle de condition.</div>
-      <div class="transform-row">
-        <input class="transform-input" id="t3" placeholder="Si elle travaille dur, elle…" />
-        <button class="check-btn" onclick="checkTransform('t3', ['si elle travaille dur, elle réussira','à condition qu elle travaille dur, elle réussira','pourvu qu elle travaille dur, elle réussira'])">Vérifier</button>
-      </div>
-      <div class="feedback" id="fb-t3"></div>
     </div>
   </div>
 
-  <!-- SCORE -->
-  <div class="score-bar">
-    <div>
-      <div class="score-label">Score QCM</div>
-      <div class="score-num" id="score-display">—</div>
+  <!-- SLIDE 6 : EFFICACITÉ ET JUSTICE -->
+  <div class="slide" id="slide-6">
+    <div class="slide-header">
+      <div class="num">5</div>
+      <h2>Efficacité et Justice</h2>
     </div>
-    <div class="score-msg" id="score-msg">Réponds aux questions pour voir ton score.</div>
-    <button class="global-check-btn" onclick="calcScore()">Calculer mon score</button>
+    <div class="divider"></div>
+    <p style="color:var(--muted); font-size:1rem; line-height:1.7; max-width:72ch; margin-bottom:1.4rem">
+      La discrimination positive soulève deux critiques majeures : inégalité de traitement et risque de stigmatisation.
+    </p>
+    <div class="cards cols2">
+      <div class="card danger">
+        <div class="card-title">⚠ Critique principale</div>
+        <p>Des admissions qui favorisent certains candidats au détriment d'autres.</p>
+      </div>
+      <div class="card success">
+        <div class="card-title">✓ Données</div>
+        <p>Les bénéficiaires réussissent aussi bien que les autres. L'argument de la baisse du niveau ne tient pas.</p>
+      </div>
+    </div>
   </div>
 
+  <!-- SLIDE 7 : EXEMPLES -->
+  <div class="slide" id="slide-7">
+    <div class="slide-header">
+      <div class="num">6</div>
+      <h2>Exemples concrets de discrimination positive</h2>
+    </div>
+    <div class="divider"></div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-year">2001</div>
+        <div class="tl-content">
+          <h4>Sciences Po Paris — Convention Éducation Prioritaire (CEP)</h4>
+          <p>Lancée par Richard Descoings. Admission par oral et dossier pour les lycéens de REP, sans concours classique. Plus de 100 lycées partenaires aujourd'hui.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2008</div>
+        <div class="tl-content">
+          <h4>Cordées de la réussite</h4>
+          <p>Dispositif national : grandes écoles et universités accompagnent des lycées défavorisés dès la seconde pour préparer les élèves à des études ambitieuses.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8 : RÉSULTATS -->
+  <div class="slide" id="slide-8">
+    <div class="slide-header">
+      <div class="num">7</div>
+      <h2>Résultats des programmes</h2>
+    </div>
+    <div class="divider"></div>
+    <div class="stats">
+      <div class="stat-box">
+        <div class="stat-val">10–15%</div>
+        <div class="stat-label">des admis à Sciences Po<br>via la voie CEP</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val">100+</div>
+        <div class="stat-label">lycées REP/ZEP<br>partenaires de Sciences Po</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val">=</div>
+        <div class="stat-label">réussite des étudiants CEP<br>vs voie classique</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9 : CAS D'ÉTUDE -->
+  <div class="slide" id="slide-9">
+    <div class="slide-header">
+      <div class="num">8</div>
+      <h2>Cas d'étude : Sciences Po et HEC</h2>
+    </div>
+    <div class="divider"></div>
+    <div class="case-grid">
+      <div class="case-card">
+        <div class="case-num">01</div>
+        <h3>Sciences Po Paris</h3>
+        <ul>
+          <li>Pionnier, lancé en 2001</li>
+          <li>100+ lycées ZEP/REP partenaires</li>
+          <li>10–15 % des admis via la CEP</li>
+          <li>Accompagnement financier et pédagogique inclus</li>
+        </ul>
+      </div>
+      <div class="case-card">
+        <div class="case-num" style="color:var(--accent2)">02</div>
+        <h3>HEC Paris</h3>
+        <ul>
+          <li>Programme diversité et égalité des chances</li>
+          <li>Marge de progression importante</li>
+          <li>Pression croissante pour généraliser les quotas</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10 : CONCLUSION -->
+  <div class="slide" id="slide-10">
+    <div class="tag">Conclusion</div>
+    <h2 style="margin-bottom:.3rem">Des effets positifs, mais limités</h2>
+    <div class="divider"></div>
+    <div class="conclusion-grid">
+      <div class="concl-item">
+        <div class="concl-icon" style="color:var(--success)">✓</div>
+        <div class="concl-text">Rend les chances plus équitables et contrebalance les inégalités de naissance.</div>
+      </div>
+      <div class="concl-item">
+        <div class="concl-icon" style="color:var(--success)">✓</div>
+        <div class="concl-text">Les bénéficiaires réussissent aussi bien : le milieu social n'est pas un plafond de verre.</div>
+      </div>
+      <div class="concl-item">
+        <div class="concl-icon" style="color:var(--accent)">⚡</div>
+        <div class="concl-text">Étendre cette politique à d'autres établissements.</div>
+      </div>
+      <div class="concl-item">
+        <div class="concl-icon" style="color:var(--accent)">⚡</div>
+        <div class="concl-text">Agir dès le collège, avant la terminale.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <span class="authors">Titouan, Ewen & Raphaël — Thème 2 : Les discriminations</span>
+  <div class="dots" id="dots"></div>
+  <div class="nav">
+    <button id="prev" onclick="go(-1)">&#8592;</button>
+    <span class="counter" id="counter">1 / 10</span>
+    <button id="next" onclick="go(1)">&#8594;</button>
+  </div>
 </div>
 
 <script>
-  // --- QCM ---
-  const explanations = {
-    q1: { ok: "✓ Correct ! C'est bien une subordonnée relative introduite par le pronom relatif <em>que</em>, complément du nom <em>roman</em>.", ko: "✗ Attention. La proposition introduite par <em>que</em> qualifie le nom <em>roman</em> → subordonnée relative." },
-    q2: { ok: "✓ Parfait ! <em>qu'il reviendrait un jour</em> est COD du verbe <em>savais</em> → subordonnée complétive.", ko: "✗ Cette proposition est COD de <em>savais</em> → subordonnée complétive (introduite par <em>que</em>)." },
-    q3: { ok: "✓ Bravo ! <em>Bien que</em> est une conjonction de subordination marquant la concession → sub. circonstancielle.", ko: "✗ <em>Bien que</em> introduit une circonstancielle de concession (opposition), pas de principale ni de relative." },
-    q4: { ok: "✓ Exact ! Après la sub. circonstancielle de temps (<em>Lorsque</em>…), la proposition restante est bien la principale.", ko: "✗ La proposition introduite par <em>Lorsque</em> est la circonstancielle de temps. La principale est bien <em>les lumières s'allumèrent</em>." },
-    q5: { ok: "✓ Juste ! Les deux propositions juxtaposées par <em>;</em> sont indépendantes : aucune ne dépend de l'autre.", ko: "✗ Deux propositions liées seulement par un signe de ponctuation (sans conjonction de subordination) sont des indépendantes juxtaposées." },
-  };
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let cur = 0;
 
-  function answer(btn, qId, choice) {
-    const qEl = document.getElementById(qId);
-    if (qEl.classList.contains('correct') || qEl.classList.contains('wrong')) return;
-    const correct = qEl.dataset.answer;
-    const fb = document.getElementById('fb-' + qId);
-    const btns = qEl.querySelectorAll('.choice-btn');
-    btns.forEach(b => b.disabled = true);
+  // Build dots
+  const dotsEl = document.getElementById('dots');
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  });
 
-    if (choice === correct) {
-      btn.classList.add('selected-correct');
-      qEl.classList.add('correct');
-      fb.innerHTML = explanations[qId].ok;
-      fb.className = 'feedback show ok';
-    } else {
-      btn.classList.add('selected-wrong');
-      qEl.classList.add('wrong');
-      fb.innerHTML = explanations[qId].ko;
-      fb.className = 'feedback show ko';
-      btns.forEach(b => {
-        if (b.textContent.includes(correct.replace('PS-relative','Sub. relative').replace('PS-completive','Sub. complétive').replace('PS-circ','Sub. circonstancielle').replace('PP','Proposition Principale').replace('PI','Prop. Indépendante'))) {
-          b.classList.add('reveal-correct');
-        }
-      });
-      // reveal correct by answer value
-      btns.forEach(b => { if (b.getAttribute('onclick').includes("'"+correct+"'")) b.classList.add('reveal-correct'); });
-    }
+  function goTo(n) {
+    slides[cur].classList.remove('active');
+    dotsEl.children[cur].classList.remove('active');
+    cur = Math.max(0, Math.min(total - 1, n));
+    slides[cur].classList.add('active');
+    dotsEl.children[cur].classList.add('active');
+    document.getElementById('counter').textContent = (cur+1) + ' / ' + total;
+    document.getElementById('prev').disabled = cur === 0;
+    document.getElementById('next').disabled = cur === total - 1;
   }
 
-  // --- Repérage ---
-  let currentTag = 'PP';
-  function setTag(t) {
-    currentTag = t;
-    ['PP','PS','PI'].forEach(x => {
-      document.getElementById('tag-'+x).classList.toggle('active-tag', x === t);
-    });
-  }
-  function tagProp(id) {
-    const el = document.getElementById(id);
-    const cls = 'tagged-' + currentTag;
-    if (el.classList.contains(cls)) {
-      el.classList.remove(cls);
-    } else {
-      el.classList.remove('tagged-PP','tagged-PS','tagged-PI');
-      el.classList.add(cls);
-    }
-  }
+  function go(d) { goTo(cur + d); }
 
-  // --- Transformation ---
-  function normalize(s) {
-    return s.toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-      .replace(/['']/g,' ')
-      .replace(/\s+/g,' ')
-      .trim();
-  }
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   go(-1);
+  });
 
-  function checkTransform(inputId, accepted) {
-    const input = document.getElementById(inputId);
-    const val = normalize(input.value);
-    const fb = document.getElementById('fb-' + inputId);
-    const ok = accepted.some(a => val.includes(normalize(a).split(',')[0].substring(0,15)) || normalize(a).includes(val.substring(0,15)));
-    const strictOk = accepted.some(a => {
-      const an = normalize(a);
-      return val.length > 8 && (an.includes(val.substring(0,12)) || val.includes(an.substring(0,12)));
-    });
-    if (strictOk) {
-      input.classList.add('correct-input'); input.classList.remove('wrong-input');
-      fb.innerHTML = '✓ Bien ! Ta reformulation est correcte.';
-      fb.className = 'feedback show ok';
-    } else {
-      input.classList.add('wrong-input'); input.classList.remove('correct-input');
-      fb.innerHTML = '✗ Pas tout à fait. Exemple attendu : <em>' + accepted[0] + '</em>';
-      fb.className = 'feedback show ko';
-    }
-  }
-
-  // --- Score ---
-  function calcScore() {
-    const ids = ['q1','q2','q3','q4','q5'];
-    let correct = 0, answered = 0;
-    ids.forEach(id => {
-      const q = document.getElementById(id);
-      if (q.classList.contains('correct')) { correct++; answered++; }
-      else if (q.classList.contains('wrong')) { answered++; }
-    });
-    const display = document.getElementById('score-display');
-    const msg = document.getElementById('score-msg');
-    if (answered === 0) {
-      msg.textContent = 'Tu n\'as pas encore répondu aux questions QCM.';
-      return;
-    }
-    display.textContent = correct + ' / ' + answered;
-    if (correct === answered && answered === 5) {
-      msg.textContent = '🎉 Excellent ! Tu maîtrises parfaitement les propositions. Prêt(e) pour l\'oral du bac !';
-    } else if (correct >= 3) {
-      msg.textContent = '👍 Bon travail ! Relis les explications des erreurs pour consolider tes acquis.';
-    } else {
-      msg.textContent = '📖 Continue à t\'entraîner ! Relis le mémo et reprends les questions incorrectes.';
-    }
-  }
+  goTo(0);
 </script>
 </body>
 </html>
