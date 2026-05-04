@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercice – Les Propositions</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1208;
+    --cream: #f7f2e8;
+    --amber: #c8841a;
+    --red: #b83232;
+    --green: #2e7d5e;
+    --muted: #7a6e5a;
+    --line: #d4c9b0;
+    --paper: #fdf8ef;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    background-image: 
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 31px,
+        var(--line) 31px,
+        var(--line) 32px
+      );
+    background-size: 100% 32px;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 3rem 3.5rem;
+    box-shadow: 4px 4px 0 #c8b89040, 8px 8px 0 #c8b89020;
+    position: relative;
+  }
+
+  .container::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 4rem;
+    width: 2px;
+    height: 100%;
+    background: #e8a0a020;
+  }
+
+  header {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 1.2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .subject-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--amber);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+
+  h1 em {
+    color: var(--amber);
+    font-style: italic;
+  }
+
+  .meta {
+    margin-top: 0.7rem;
+    font-size: 0.7rem;
+    color: var(--muted);
+    display: flex;
+    gap: 2rem;
+  }
+
+  /* LECON RAPIDE */
+  .lesson {
+    background: #fef9f0;
+    border-left: 3px solid var(--amber);
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 2.5rem;
+    font-size: 0.75rem;
+    line-height: 1.8;
+  }
+
+  .lesson h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 0.8rem;
+  }
+
+  .lesson-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 2rem;
+  }
+
+  .lesson-item {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .lesson-item .label {
+    color: var(--amber);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* EXERCICES */
+  .exercise-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .exercise-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+  }
+
+  .exercise-title .num {
+    color: var(--amber);
+    font-size: 1.4rem;
+  }
+
+  .consigne {
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    font-style: italic;
+  }
+
+  /* Question MCQ */
+  .question {
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.2rem;
+    background: white;
+    border: 1px solid var(--line);
+    transition: border-color 0.2s;
+  }
+
+  .question.correct { border-color: var(--green); background: #f0faf5; }
+  .question.wrong   { border-color: var(--red);   background: #fdf0f0; }
+
+  .question-text {
+    font-size: 0.8rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .question-text .phrase {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--ink);
+  }
+
+  .phrase-part {
+    background: #f0e8d8;
+    padding: 0 4px;
+    border-bottom: 2px solid var(--amber);
+    cursor: default;
+  }
+
+  .choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .choice-btn {
+    padding: 0.35rem 0.8rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    border: 1px solid var(--line);
+    background: var(--cream);
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .choice-btn:hover:not(:disabled) {
+    border-color: var(--amber);
+    background: #fff8ee;
+  }
+
+  .choice-btn.selected-correct {
+    background: var(--green);
+    color: white;
+    border-color: var(--green);
+  }
+
+  .choice-btn.selected-wrong {
+    background: var(--red);
+    color: white;
+    border-color: var(--red);
+  }
+
+  .choice-btn.reveal-correct {
+    background: var(--green);
+    color: white;
+    border-color: var(--green);
+    opacity: 0.7;
+  }
+
+  .feedback {
+    font-size: 0.68rem;
+    margin-top: 0.7rem;
+    padding: 0.5rem 0.7rem;
+    display: none;
+    line-height: 1.5;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.ok { background: #e8f5ee; color: var(--green); border-left: 2px solid var(--green); }
+  .feedback.ko { background: #fce8e8; color: var(--red); border-left: 2px solid var(--red); }
+
+  /* Exercice de repérage (souligner) */
+  .reperage-block {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    line-height: 2.2;
+    margin-bottom: 1rem;
+    padding: 1rem 1.2rem;
+    background: white;
+    border: 1px solid var(--line);
+  }
+
+  .clickable-prop {
+    cursor: pointer;
+    padding: 2px 0;
+    border-bottom: 2px dashed #c8b89080;
+    transition: all 0.15s;
+  }
+
+  .clickable-prop:hover { border-bottom-color: var(--amber); background: #fff8ee; }
+  .clickable-prop.tagged-PP { border-bottom: 2.5px solid var(--green); background: #e8f5ee80; }
+  .clickable-prop.tagged-PS { border-bottom: 2.5px solid #5a72b8; background: #eeeeff80; }
+  .clickable-prop.tagged-PI { border-bottom: 2.5px solid var(--amber); background: #fff3e080; }
+
+  .legend-row {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    font-size: 0.68rem;
+    margin-bottom: 1rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    padding: 0.3rem 0.6rem;
+    border: 1px solid var(--line);
+    background: white;
+    transition: all 0.15s;
+  }
+
+  .legend-item:hover { border-color: var(--amber); }
+  .legend-item.active-tag { border-color: var(--ink); font-weight: 500; }
+
+  .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .dot-PP { background: var(--green); }
+  .dot-PS { background: #5a72b8; }
+  .dot-PI { background: var(--amber); }
+
+  /* Exercice de transformation */
+  .transform-item {
+    margin-bottom: 1.2rem;
+    padding: 0.9rem 1.1rem;
+    background: white;
+    border: 1px solid var(--line);
+  }
+
+  .transform-phrase {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .transform-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .arrow-label {
+    font-size: 0.65rem;
+    color: var(--amber);
+    white-space: nowrap;
+  }
+
+  .transform-input {
+    flex: 1;
+    min-width: 200px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.7rem;
+    border: 1px solid var(--line);
+    background: var(--cream);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .transform-input:focus { border-color: var(--amber); }
+  .transform-input.correct-input { border-color: var(--green); background: #f0faf5; }
+  .transform-input.wrong-input  { border-color: var(--red);   background: #fdf0f0; }
+
+  .check-btn {
+    padding: 0.4rem 0.9rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--cream);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .check-btn:hover { background: var(--amber); border-color: var(--amber); }
+
+  /* Score */
+  .score-bar {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--line);
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .score-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--amber);
+  }
+
+  .score-msg {
+    font-size: 0.75rem;
+    color: var(--ink);
+    max-width: 300px;
+  }
+
+  .global-check-btn {
+    padding: 0.6rem 1.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    border: 2px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .global-check-btn:hover {
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+  hr.divider {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 2rem 0;
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 2rem 1.5rem; }
+    .lesson-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="subject-tag">Grammaire · Préparation Bac</div>
+    <h1>Les <em>Propositions</em><br>dans la phrase complexe</h1>
+    <div class="meta">
+      <span>📚 Seconde &amp; Première</span>
+      <span>⏱ ~20 minutes</span>
+      <span>🎯 Oral / Écrit</span>
+    </div>
+  </header>
+
+  <!-- LECON -->
+  <div class="lesson">
+    <h2>📖 Mémo rapide</h2>
+    <div class="lesson-grid">
+      <div class="lesson-item"><span class="label">PP :</span> Proposition Principale – elle peut exister seule.</div>
+      <div class="lesson-item"><span class="label">PS :</span> Proposition Subordonnée – dépend de la PP (relative, complétive, circonstancielle…)</div>
+      <div class="lesson-item"><span class="label">PI :</span> Proposition Indépendante – ni PP ni PS ; phrase simple ou juxtaposée.</div>
+      <div class="lesson-item"><span class="label">Astuce :</span> Repère d'abord les verbes conjugués → chaque verbe = une proposition.</div>
+    </div>
+  </div>
+
+  <!-- EXERCICE 1 : QCM -->
+  <div class="exercise-section" id="ex1">
+    <div class="exercise-title"><span class="num">01</span> Nature des propositions soulignées</div>
+    <div class="consigne">Pour chaque phrase, identifie la nature de la proposition en gras.</div>
+
+    <div class="question" id="q1" data-answer="PS-relative">
+      <div class="question-text">
+        « Le roman <span class="phrase-part">que tu m'as prêté</span> était passionnant. »
+      </div>
+      <div class="choices">
+        <button class="choice-btn" onclick="answer(this,'q1','PP')">Proposition Principale</button>
+        <button class="choice-btn" onclick="answer(this,'q1','PS-relative')">Sub. relative</button>
+        <button class="choice-btn" onclick="answer(this,'q1','PS-completive')">Sub. complétive</button>
+        <button class="choice-btn" onclick="answer(this,'q1','PS-circ')">Sub. circonstancielle</button>
+      </div>
+      <div class="feedback" id="fb-q1"></div>
+    </div>
+
+    <div class="question" id="q2" data-answer="PS-completive">
+      <div class="question-text">
+        « Je savais <span class="phrase-part">qu'il reviendrait un jour</span>. »
+      </div>
+      <div class="choices">
+        <button class="choice-btn" onclick="answer(this,'q2','PS-relative')">Sub. relative</button>
+        <button class="choice-btn" onclick="answer(this,'q2','PP')">Proposition Principale</button>
+        <button class="choice-btn" onclick="answer(this,'q2','PS-completive')">Sub. complétive</button>
+        <button class="choice-btn" onclick="answer(this,'q2','PI')">Prop. Indépendante</button>
+      </div>
+      <div class="feedback" id="fb-q2"></div>
+    </div>
+
+    <div class="question" id="q3" data-answer="PS-circ">
+      <div class="question-text">
+        « <span class="phrase-part">Bien qu'il fasse froid</span>, nous sommes sortis nous promener. »
+      </div>
+      <div class="choices">
+        <button class="choice-btn" onclick="answer(this,'q3','PP')">Proposition Principale</button>
+        <button class="choice-btn" onclick="answer(this,'q3','PS-relative')">Sub. relative</button>
+        <button class="choice-btn" onclick="answer(this,'q3','PS-completive')">Sub. complétive</button>
+        <button class="choice-btn" onclick="answer(this,'q3','PS-circ')">Sub. circonstancielle</button>
+      </div>
+      <div class="feedback" id="fb-q3"></div>
+    </div>
+
+    <div class="question" id="q4" data-answer="PP">
+      <div class="question-text">
+        « Lorsque la nuit tomba, <span class="phrase-part">les lumières de la ville s'allumèrent</span>. »
+      </div>
+      <div class="choices">
+        <button class="choice-btn" onclick="answer(this,'q4','PS-circ')">Sub. circonstancielle</button>
+        <button class="choice-btn" onclick="answer(this,'q4','PP')">Proposition Principale</button>
+        <button class="choice-btn" onclick="answer(this,'q4','PS-relative')">Sub. relative</button>
+        <button class="choice-btn" onclick="answer(this,'q4','PI')">Prop. Indépendante</button>
+      </div>
+      <div class="feedback" id="fb-q4"></div>
+    </div>
+
+    <div class="question" id="q5" data-answer="PI">
+      <div class="question-text">
+        « <span class="phrase-part">La pluie tombe</span> ; les rues se vident. »
+      </div>
+      <div class="choices">
+        <button class="choice-btn" onclick="answer(this,'q5','PP')">Proposition Principale</button>
+        <button class="choice-btn" onclick="answer(this,'q5','PS-circ')">Sub. circonstancielle</button>
+        <button class="choice-btn" onclick="answer(this,'q5','PI')">Prop. Indépendante</button>
+        <button class="choice-btn" onclick="answer(this,'q5','PS-completive')">Sub. complétive</button>
+      </div>
+      <div class="feedback" id="fb-q5"></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- EXERCICE 2 : Repérage interactif -->
+  <div class="exercise-section" id="ex2">
+    <div class="exercise-title"><span class="num">02</span> Repérage dans le texte</div>
+    <div class="consigne">
+      Choisis un type de proposition à étiqueter, puis clique sur les segments colorés dans le texte.
+      Clique à nouveau pour désélectionner.
+    </div>
+
+    <div class="legend-row">
+      <div class="legend-item active-tag" id="tag-PP" onclick="setTag('PP')"><span class="dot dot-PP"></span> Principale (PP)</div>
+      <div class="legend-item" id="tag-PS" onclick="setTag('PS')"><span class="dot dot-PS"></span> Subordonnée (PS)</div>
+      <div class="legend-item" id="tag-PI" onclick="setTag('PI')"><span class="dot dot-PI"></span> Indépendante (PI)</div>
+    </div>
+
+    <div class="reperage-block">
+      <span class="clickable-prop" id="seg1" onclick="tagProp('seg1')">La vieille femme s'assit</span>
+      <span> / </span>
+      <span class="clickable-prop" id="seg2" onclick="tagProp('seg2')">et elle prit une longue inspiration</span>.
+      <br>
+      <span class="clickable-prop" id="seg3" onclick="tagProp('seg3')">Bien que la soirée fût douce</span>,
+      <span class="clickable-prop" id="seg4" onclick="tagProp('seg4')">elle frissonnait légèrement</span>.
+      <br>
+      <span class="clickable-prop" id="seg5" onclick="tagProp('seg5')">Elle songeait</span>
+      <span class="clickable-prop" id="seg6" onclick="tagProp('seg6')">que les années passent trop vite</span>.
+      <br>
+      <span class="clickable-prop" id="seg7" onclick="tagProp('seg7')">Le jardin qu'elle aimait tant</span>
+      <span> était plongé dans la pénombre</span>.
+    </div>
+
+    <div style="font-size:0.68rem; color:var(--muted); margin-top:0.5rem;">
+      ✦ Correction attendue : seg1 = PI, seg2 = PI, seg3 = PS (circ.), seg4 = PP, seg5 = PP, seg6 = PS (complétive), seg7 = PS (relative)
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- EXERCICE 3 : Transformation -->
+  <div class="exercise-section" id="ex3">
+    <div class="exercise-title"><span class="num">03</span> Transformation de propositions</div>
+    <div class="consigne">
+      Réécris chaque proposition selon la consigne entre parenthèses. Tape ta réponse et vérifie.
+    </div>
+
+    <div class="transform-item">
+      <div class="transform-phrase">
+        « Il pleut. Nous restons chez nous. »
+      </div>
+      <div style="font-size:0.68rem;color:var(--muted);margin-bottom:0.5rem;">→ Relie les deux propositions avec une subordonnée circonstancielle de cause.</div>
+      <div class="transform-row">
+        <input class="transform-input" id="t1" placeholder="Comme il pleut, nous…" />
+        <button class="check-btn" onclick="checkTransform('t1', ['comme il pleut, nous restons chez nous','puisqu il pleut, nous restons chez nous','étant donné qu il pleut, nous restons chez nous'])">Vérifier</button>
+      </div>
+      <div class="feedback" id="fb-t1"></div>
+    </div>
+
+    <div class="transform-item">
+      <div class="transform-phrase">
+        « Je pense que tu as raison. »
+      </div>
+      <div style="font-size:0.68rem;color:var(--muted);margin-bottom:0.5rem;">→ Identifie la subordonnée complétive et transforme-la en groupe nominal (nominalisation).</div>
+      <div class="transform-row">
+        <input class="transform-input" id="t2" placeholder="Je pense à…" />
+        <button class="check-btn" onclick="checkTransform('t2', ['je pense à ta raison','je crois en ta raison','je pense à ton bien-fondé','je suis convaincu de ta raison'])">Vérifier</button>
+      </div>
+      <div class="feedback" id="fb-t2"></div>
+    </div>
+
+    <div class="transform-item">
+      <div class="transform-phrase">
+        « Elle travaille dur. Elle réussira. »
+      </div>
+      <div style="font-size:0.68rem;color:var(--muted);margin-bottom:0.5rem;">→ Relie avec une subordonnée circonstancielle de condition.</div>
+      <div class="transform-row">
+        <input class="transform-input" id="t3" placeholder="Si elle travaille dur, elle…" />
+        <button class="check-btn" onclick="checkTransform('t3', ['si elle travaille dur, elle réussira','à condition qu elle travaille dur, elle réussira','pourvu qu elle travaille dur, elle réussira'])">Vérifier</button>
+      </div>
+      <div class="feedback" id="fb-t3"></div>
+    </div>
+  </div>
+
+  <!-- SCORE -->
+  <div class="score-bar">
+    <div>
+      <div class="score-label">Score QCM</div>
+      <div class="score-num" id="score-display">—</div>
+    </div>
+    <div class="score-msg" id="score-msg">Réponds aux questions pour voir ton score.</div>
+    <button class="global-check-btn" onclick="calcScore()">Calculer mon score</button>
+  </div>
+
+</div>
+
+<script>
+  // --- QCM ---
+  const explanations = {
+    q1: { ok: "✓ Correct ! C'est bien une subordonnée relative introduite par le pronom relatif <em>que</em>, complément du nom <em>roman</em>.", ko: "✗ Attention. La proposition introduite par <em>que</em> qualifie le nom <em>roman</em> → subordonnée relative." },
+    q2: { ok: "✓ Parfait ! <em>qu'il reviendrait un jour</em> est COD du verbe <em>savais</em> → subordonnée complétive.", ko: "✗ Cette proposition est COD de <em>savais</em> → subordonnée complétive (introduite par <em>que</em>)." },
+    q3: { ok: "✓ Bravo ! <em>Bien que</em> est une conjonction de subordination marquant la concession → sub. circonstancielle.", ko: "✗ <em>Bien que</em> introduit une circonstancielle de concession (opposition), pas de principale ni de relative." },
+    q4: { ok: "✓ Exact ! Après la sub. circonstancielle de temps (<em>Lorsque</em>…), la proposition restante est bien la principale.", ko: "✗ La proposition introduite par <em>Lorsque</em> est la circonstancielle de temps. La principale est bien <em>les lumières s'allumèrent</em>." },
+    q5: { ok: "✓ Juste ! Les deux propositions juxtaposées par <em>;</em> sont indépendantes : aucune ne dépend de l'autre.", ko: "✗ Deux propositions liées seulement par un signe de ponctuation (sans conjonction de subordination) sont des indépendantes juxtaposées." },
+  };
+
+  function answer(btn, qId, choice) {
+    const qEl = document.getElementById(qId);
+    if (qEl.classList.contains('correct') || qEl.classList.contains('wrong')) return;
+    const correct = qEl.dataset.answer;
+    const fb = document.getElementById('fb-' + qId);
+    const btns = qEl.querySelectorAll('.choice-btn');
+    btns.forEach(b => b.disabled = true);
+
+    if (choice === correct) {
+      btn.classList.add('selected-correct');
+      qEl.classList.add('correct');
+      fb.innerHTML = explanations[qId].ok;
+      fb.className = 'feedback show ok';
+    } else {
+      btn.classList.add('selected-wrong');
+      qEl.classList.add('wrong');
+      fb.innerHTML = explanations[qId].ko;
+      fb.className = 'feedback show ko';
+      btns.forEach(b => {
+        if (b.textContent.includes(correct.replace('PS-relative','Sub. relative').replace('PS-completive','Sub. complétive').replace('PS-circ','Sub. circonstancielle').replace('PP','Proposition Principale').replace('PI','Prop. Indépendante'))) {
+          b.classList.add('reveal-correct');
+        }
+      });
+      // reveal correct by answer value
+      btns.forEach(b => { if (b.getAttribute('onclick').includes("'"+correct+"'")) b.classList.add('reveal-correct'); });
+    }
+  }
+
+  // --- Repérage ---
+  let currentTag = 'PP';
+  function setTag(t) {
+    currentTag = t;
+    ['PP','PS','PI'].forEach(x => {
+      document.getElementById('tag-'+x).classList.toggle('active-tag', x === t);
+    });
+  }
+  function tagProp(id) {
+    const el = document.getElementById(id);
+    const cls = 'tagged-' + currentTag;
+    if (el.classList.contains(cls)) {
+      el.classList.remove(cls);
+    } else {
+      el.classList.remove('tagged-PP','tagged-PS','tagged-PI');
+      el.classList.add(cls);
+    }
+  }
+
+  // --- Transformation ---
+  function normalize(s) {
+    return s.toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/['']/g,' ')
+      .replace(/\s+/g,' ')
+      .trim();
+  }
+
+  function checkTransform(inputId, accepted) {
+    const input = document.getElementById(inputId);
+    const val = normalize(input.value);
+    const fb = document.getElementById('fb-' + inputId);
+    const ok = accepted.some(a => val.includes(normalize(a).split(',')[0].substring(0,15)) || normalize(a).includes(val.substring(0,15)));
+    const strictOk = accepted.some(a => {
+      const an = normalize(a);
+      return val.length > 8 && (an.includes(val.substring(0,12)) || val.includes(an.substring(0,12)));
+    });
+    if (strictOk) {
+      input.classList.add('correct-input'); input.classList.remove('wrong-input');
+      fb.innerHTML = '✓ Bien ! Ta reformulation est correcte.';
+      fb.className = 'feedback show ok';
+    } else {
+      input.classList.add('wrong-input'); input.classList.remove('correct-input');
+      fb.innerHTML = '✗ Pas tout à fait. Exemple attendu : <em>' + accepted[0] + '</em>';
+      fb.className = 'feedback show ko';
+    }
+  }
+
+  // --- Score ---
+  function calcScore() {
+    const ids = ['q1','q2','q3','q4','q5'];
+    let correct = 0, answered = 0;
+    ids.forEach(id => {
+      const q = document.getElementById(id);
+      if (q.classList.contains('correct')) { correct++; answered++; }
+      else if (q.classList.contains('wrong')) { answered++; }
+    });
+    const display = document.getElementById('score-display');
+    const msg = document.getElementById('score-msg');
+    if (answered === 0) {
+      msg.textContent = 'Tu n\'as pas encore répondu aux questions QCM.';
+      return;
+    }
+    display.textContent = correct + ' / ' + answered;
+    if (correct === answered && answered === 5) {
+      msg.textContent = '🎉 Excellent ! Tu maîtrises parfaitement les propositions. Prêt(e) pour l\'oral du bac !';
+    } else if (correct >= 3) {
+      msg.textContent = '👍 Bon travail ! Relis les explications des erreurs pour consolider tes acquis.';
+    } else {
+      msg.textContent = '📖 Continue à t\'entraîner ! Relis le mémo et reprends les questions incorrectes.';
+    }
+  }
+</script>
+</body>
+</html>
